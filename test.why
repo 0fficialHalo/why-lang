@@ -1,0 +1,11 @@
+func add(a, b) {
+    let result = a + b;
+
+    result
+}
+
+const result = add(10, 4);
+const stringg = "hello";
+
+print((5 >= 3))
+print(result)
