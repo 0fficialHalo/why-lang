@@ -1,11 +1,12 @@
-func add(a, b) {
-    let result = a + b;
+func makeAdder (offset) {
 
-    result
+  func add (x, y)  {
+    x + y + offset
+  }
+
+  add
 }
 
-const result = add(10, 4);
-const stringg = "hello";
+const adder = makeAdder(1);
 
-print((5 >= 3))
-print(result)
+print(adder(10.5, 5))

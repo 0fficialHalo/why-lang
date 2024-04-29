@@ -27,7 +27,6 @@ function eval_numeric_binary_expr(lhs: NumberVal, rhs: NumberVal, operator: stri
             return MK_BOOL(lhs.value == rhs.value);
         case "!=":
             return MK_BOOL(lhs.value != rhs.value);
-        
         default:
             throw "Unknown operator method provided"
     }
