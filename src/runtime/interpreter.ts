@@ -1,9 +1,9 @@
 // deno-lint-ignore-file no-unused-vars
-import { RuntimeVal, NumberVal, MK_NULL, InternalVal, StringVal } from "./values.ts";
-import { AssignmentExpr, BinaryExpr, CallExpr, FuncDeclaration, Identifier, NumericLiteral, ObjectLiteral, Program, Stmt, StringLiteral, VarDeclaration } from "../frontend/ast.ts";
-import Environment from "./environment.ts";
-import { eval_identifier, eval_binary_expr, eval_assignment, eval_object_expr, eval_call_expr } from "./eval/expressions.ts";
-import { eval_func_declaration, eval_program, eval_var_declaration } from "./eval/statements.ts";
+import { RuntimeVal, NumberVal, MK_NULL, InternalVal, StringVal } from "./values";
+import { AssignmentExpr, BinaryExpr, CallExpr, FuncDeclaration, Identifier, NumericLiteral, ObjectLiteral, Program, Stmt, StringLiteral, VarDeclaration } from "../frontend/ast";
+import Environment from "./environment";
+import { eval_identifier, eval_binary_expr, eval_assignment, eval_object_expr, eval_call_expr } from "./eval/expressions";
+import { eval_func_declaration, eval_program, eval_var_declaration } from "./eval/statements";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
     switch (astNode.kind) {
@@ -45,6 +45,6 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
 
         default:
             console.error("This AST Node has not yet been setup for interpretation.", astNode);
-            Deno.exit(0);
+            process.exit(0);
     }
 }

@@ -146,7 +146,7 @@ export function tokenize(sourceCode: string): Token[] {
                 src.shift();
             } else {
                 console.error("Unreconized character found in source:", src[0].charCodeAt(0), src[0]);
-                Deno.exit(1)
+                process.exit(1)
             }
         }
     }

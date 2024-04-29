@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-import { FuncDeclaration, MemberExpr, StringLiteral } from "./ast.ts";
-import { Stmt, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VarDeclaration, AssignmentExpr, Property, ObjectLiteral, CallExpr } from "./ast.ts";
-import { tokenize, Token, TokenType } from "./lexer.ts";
+import { FuncDeclaration, MemberExpr, StringLiteral } from "./ast";
+import { Stmt, Program, Expr, BinaryExpr, NumericLiteral, Identifier, VarDeclaration, AssignmentExpr, Property, ObjectLiteral, CallExpr } from "./ast";
+import { tokenize, Token, TokenType } from "./lexer";
 
 export default class Parser {
     private tokens: Token[] = [];
@@ -24,7 +24,7 @@ export default class Parser {
 
         if (!prev || prev.type != type) {
             console.error("Parser Error:\n", err, prev, "Expecting: ", type);
-            Deno.exit(1);
+            process.exit(1);
         }
 
         return prev
@@ -305,7 +305,7 @@ export default class Parser {
 
             default:
                 console.error("Unexpected token found during parsing!", this.at());
-                Deno.exit(1);
+                process.exit(1);
         }
     };
 }

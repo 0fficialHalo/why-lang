@@ -1,0 +1,23 @@
+{
+  "name": "why-lang",
+  "version": "1.0.0",
+  "description": "a custom programming language made by OfficialHalo, idk why i made it",
+  "scripts": {
+    "why": "npx ts-node src/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0fficialHalo/why-lang.git"
+  },
+  "author": "OfficialHalo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0fficialHalo/why-lang/issues"
+  },
+  "homepage": "https://github.com/0fficialHalo/why-lang#readme",
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "dotenv": "^16.4.5",
+    "process": "^0.11.10"
+  }
+}

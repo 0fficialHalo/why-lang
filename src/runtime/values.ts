@@ -1,5 +1,5 @@
-import { Stmt } from "../frontend/ast.ts";
-import Environment from "./environment.ts";
+import { Stmt } from "../frontend/ast";
+import Environment from "./environment";
 
 export type ValueTypes = "null" | "number" | "boolean" | "object" | "internal" | "function" | "return" | "string";
 
