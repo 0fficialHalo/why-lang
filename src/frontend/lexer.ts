@@ -8,6 +8,9 @@ export enum TokenType {
 	Let,
     Const,
     Func,
+    If,
+    Else,
+    For,
 
 	// Grouping * Operators
 	BinaryOperator,
@@ -40,6 +43,9 @@ const KEYWORDS: Record<string, TokenType> = {
     let: TokenType.Let,
     const: TokenType.Const,
     func: TokenType.Func,
+    if: TokenType.If,
+    else: TokenType.Else,
+    for: TokenType.For,
 };
 
 const ESCAPED: Record<string, string> = {

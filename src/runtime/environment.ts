@@ -1,4 +1,6 @@
-import { MK_BOOL, MK_INTERNAL, MK_NULL, MK_NUMBER, RuntimeVal } from "./values";
+import { Identifier, MemberExpr } from "../frontend/ast";
+import { evaluate } from "./interpreter";
+import { ArrayVal, MK_BOOL, MK_INTERNAL, MK_NULL, MK_NUMBER, NumberVal, ObjectVal, RuntimeVal } from "./values";
 
 export function createGlobalEnv() {
     const env = new Environment;
@@ -57,9 +59,50 @@ export default class Environment {
         return value
     }
 
-    public lookupVar(varName: string): RuntimeVal {
-        const env = this.resolve(varName);
-        return env.variables.get(varName) as RuntimeVal;
+    public lookupOrMutObject(expr: MemberExpr, value?: RuntimeVal, property?: Identifier): RuntimeVal {
+        let pastVal: RuntimeVal | undefined;
+
+        if (expr.object.kind === 'MemberExpr') {
+            pastVal = this.lookupOrMutObject(expr.object as MemberExpr, undefined, (expr.object as MemberExpr).property as Identifier);
+
+        } else {
+            const varname = (expr.object as Identifier).symbol;
+            const env = this.resolve(varname);
+
+            pastVal = env.variables.get(varname);
+        }
+
+        switch((pastVal as RuntimeVal).type) {
+            case "object": {
+                const currentProp = (expr.property as Identifier).symbol;
+                const prop = property ? property.symbol : currentProp;
+
+                if (value) (pastVal as ObjectVal).properties.set(prop, value);
+
+                if (currentProp) pastVal = ((pastVal as ObjectVal).properties.get(currentProp) as ObjectVal);
+
+                return (pastVal as RuntimeVal);
+            }
+            
+            case "array": {
+                const numRT: RuntimeVal = evaluate(expr.property, this);
+                if(numRT.type != "number") throw "Arrays do not have keys: " + expr.property;
+
+                const num = (numRT as NumberVal).value;
+                if(value) (pastVal as ArrayVal).values[num] = value;
+
+                return (pastVal as ArrayVal).values[num];
+            }
+
+            default:
+                throw "Cannot lookup or mutate type: " + (pastVal as RuntimeVal).type;
+        }
+    }
+
+    public lookupVar(varname: string): RuntimeVal {
+        const env = this.resolve(varname);
+
+        return env.variables.get(varname) as RuntimeVal;
     }
 
     public resolve(varName: string): Environment {

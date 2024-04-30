@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-unused-vars
 import { RuntimeVal, NumberVal, MK_NULL, InternalVal, StringVal } from "./values";
-import { AssignmentExpr, BinaryExpr, CallExpr, FuncDeclaration, Identifier, NumericLiteral, ObjectLiteral, Program, Stmt, StringLiteral, VarDeclaration } from "../frontend/ast";
+import { ArrayLiteral, AssignmentExpr, BinaryExpr, CallExpr, FuncDeclaration, Identifier, MemberExpr, NumericLiteral, ObjectLiteral, Program, Stmt, StringLiteral, VarDeclaration } from "../frontend/ast";
 import Environment from "./environment";
-import { eval_identifier, eval_binary_expr, eval_assignment, eval_object_expr, eval_call_expr } from "./eval/expressions";
+import { eval_identifier, eval_binary_expr, eval_assignment, eval_object_expr, eval_call_expr, eval_member_expr, eval_array_expr } from "./eval/expressions";
 import { eval_func_declaration, eval_program, eval_var_declaration } from "./eval/statements";
 
 export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
@@ -25,11 +25,17 @@ export function evaluate(astNode: Stmt, env: Environment): RuntimeVal {
         case "ObjectLiteral":
             return eval_object_expr(astNode as ObjectLiteral, env);
 
+        case "MemberExpr":
+            return eval_member_expr(env, undefined, astNode as MemberExpr);
+
         case "CallExpr":
             return eval_call_expr(astNode as CallExpr, env);
 
         case "AssignmentExpr":
             return eval_assignment(astNode as AssignmentExpr, env);
+
+        case "ArrayLiteral":
+            return eval_array_expr(astNode as ArrayLiteral, env);
 
         case "BinaryExpr":
             return eval_binary_expr(astNode as BinaryExpr, env);

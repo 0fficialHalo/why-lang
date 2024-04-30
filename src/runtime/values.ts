@@ -1,7 +1,7 @@
 import { Stmt } from "../frontend/ast";
 import Environment from "./environment";
 
-export type ValueTypes = "null" | "number" | "boolean" | "object" | "internal" | "function" | "return" | "string";
+export type ValueTypes = "null" | "number" | "boolean" | "object" | "internal" | "function" | "return" | "string" | "array";
 
 export interface RuntimeVal {
     type: ValueTypes;
@@ -25,6 +25,11 @@ export interface StringVal extends RuntimeVal {
 export interface BooleanVal extends RuntimeVal {
     type: "boolean";
     value: boolean;
+}
+
+export interface ArrayVal extends RuntimeVal {
+    type: "array";
+    values: RuntimeVal[];
 }
 
 export interface ObjectVal extends RuntimeVal {

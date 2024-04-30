@@ -1,7 +1,7 @@
-import { AssignmentExpr, BinaryExpr, CallExpr, Identifier, ObjectLiteral } from "../../frontend/ast";
+import { ArrayLiteral, AssignmentExpr, BinaryExpr, CallExpr, Identifier, MemberExpr, ObjectLiteral } from "../../frontend/ast";
 import Environment from "../environment";
 import { evaluate } from "../interpreter";
-import { NumberVal, RuntimeVal, MK_NULL, ObjectVal, InternalVal, FunctionValue, MK_NUMBER, MK_BOOL } from "../values";
+import { NumberVal, RuntimeVal, MK_NULL, ObjectVal, InternalVal, FunctionValue, MK_NUMBER, MK_BOOL, ArrayVal } from "../values";
 
 function eval_numeric_binary_expr(lhs: NumberVal, rhs: NumberVal, operator: string): RuntimeVal {
     switch (operator) {
@@ -75,7 +75,8 @@ export function eval_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
     if (fn.type == "internal") {
         const result = (fn as InternalVal).call(args, env);
         return result
-    } 
+    }
+
     else if (fn.type == "function") {
         const func = fn as FunctionValue;
         const scope = new Environment(func.declarationEnv);
@@ -94,5 +95,23 @@ export function eval_call_expr(expr: CallExpr, env: Environment): RuntimeVal {
     }
     
     throw `Cannot call value that is not a function: ` + JSON.stringify(fn);
+}
 
+export function eval_array_expr(obj: ArrayLiteral, env: Environment): RuntimeVal {
+    const array = { type: "array", values: [] } as ArrayVal;
+
+    for(const value of obj.values) {
+        const runtimeVal = evaluate(value, env);
+
+        array.values.push(runtimeVal);
+    }
+
+    return array;
+}
+
+export function eval_member_expr(env: Environment, node?: AssignmentExpr, expr?: MemberExpr): RuntimeVal {
+    if (expr) return env.lookupOrMutObject(expr);
+    if (node) return env.lookupOrMutObject(node.assigne as MemberExpr, evaluate(node.value, env));
+    
+    throw `Evaluating a member expression is not possible without a member or assignment expression.`
 }

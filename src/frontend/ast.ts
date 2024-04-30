@@ -3,6 +3,9 @@ export type NodeType =
 | "Program" 
 | "VarDeclaration"
 | "FuncDeclaration"
+| "IfStatement"
+| "ForStatement"
+| "TryCatchStatement"
 
 // Expressions
 | "AssignmentExpr"
@@ -14,6 +17,7 @@ export type NodeType =
 | "ObjectLiteral"
 | "NumericLiteral"
 | "StringLiteral"
+| "ArrayLiteral"
 | "Identifier" 
 | "BinaryExpr";
 
@@ -37,6 +41,27 @@ export interface FuncDeclaration extends Stmt {
     kind: "FuncDeclaration";
     parameters: string[];
     name: string;
+    body: Stmt[];
+}
+
+export interface IfStatement extends Stmt {
+    kind: "IfStatement";
+    test: Expr;
+    body: Stmt[];
+    alternate?: Stmt[];
+  }
+  
+export interface TryCatchStatement extends Stmt {
+    kind: "TryCatchStatement";
+    body: Stmt[];
+    alternate: Stmt[];
+}
+
+export interface ForStatement extends Stmt {
+    kind: "ForStatement";
+    init: VarDeclaration;
+    test: Expr;
+    update: AssignmentExpr;
     body: Stmt[];
 }
 
@@ -94,3 +119,7 @@ export interface ObjectLiteral extends Expr {
     properties: Property[];
 }
 
+export interface ArrayLiteral extends Expr {
+    kind: "ArrayLiteral";
+    values: Array<Expr>;
+}

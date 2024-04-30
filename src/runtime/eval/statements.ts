@@ -1,4 +1,4 @@
-import { FuncDeclaration, Program, VarDeclaration } from "../../frontend/ast";
+import { AssignmentExpr, FuncDeclaration, MemberExpr, Program, VarDeclaration } from "../../frontend/ast";
 import Environment from "../environment";
 import { evaluate } from "../interpreter";
 import { RuntimeVal, MK_NULL, FunctionValue } from "../values";
